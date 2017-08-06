@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -13,8 +14,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class Person {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="person_sequence")
+	@SequenceGenerator(sequenceName="person_id_seq", name = "person_sequence", allocationSize=1)
+	private Integer id;
 	@Column(name="first_name")
 	private String firstName;
 	@Column(name="last_name")
@@ -31,11 +33,11 @@ public class Person {
 		return builder.build();
 	}
 	
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

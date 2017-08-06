@@ -23,11 +23,11 @@
 	    <artifactId>hibernate-core</artifactId>
 	    <version>5.2.10.Final</version>
 	</dependency>
-    <dependency>
-	    <groupId>org.mariadb.jdbc</groupId>
-	    <artifactId>mariadb-java-client</artifactId>
-	    <version>2.1.0</version>
-    </dependency>
+	<dependency>
+	    <groupId>postgresql</groupId>
+	    <artifactId>postgresql</artifactId>
+	    <version>9.4.1208-jdbc42-atlassian-hosted</version>
+	</dependency>
 	<dependency>
 	  <groupId>org.apache.commons</groupId>
 	  <artifactId>commons-lang3</artifactId>

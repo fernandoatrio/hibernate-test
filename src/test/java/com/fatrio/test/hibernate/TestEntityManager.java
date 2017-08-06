@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.FlushModeType;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -32,7 +33,7 @@ public class TestEntityManager {
 		CriteriaBuilder criteria = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Person> q = criteria.createQuery(Person.class);
 		Root<Person> root = q.from(Person.class);
-		q.where(criteria.equal(root.get("email"), "PepePe@gmail.com"));
+		q.where(criteria.equal(root.get("email"), "p1@gmail.com"));
 		
 		Person person = entityManager.createQuery(q).getSingleResult();
 		
@@ -77,5 +78,16 @@ public class TestEntityManager {
 		for (Person p : Arrays.asList(p1, p2, p3)) {
 			System.out.println(p);
 		}
+	}
+	
+	@Test
+	public void testDeleteAll() {
+		EntityManager manager = factory.createEntityManager();
+		manager.getTransaction().begin();
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaDelete<Person> delete = builder.createCriteriaDelete(Person.class);
+		delete.from(Person.class);
+		manager.createQuery(delete).executeUpdate();
+		manager.getTransaction().commit();
 	}
 }
