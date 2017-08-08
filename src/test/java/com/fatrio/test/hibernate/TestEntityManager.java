@@ -4,10 +4,10 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.FlushModeType;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -20,7 +20,7 @@ import com.fatrio.main.hibernate.Person;
 
 public class TestEntityManager {
 	
-	static EntityManagerFactory factory = Persistence.createEntityManagerFactory( "com.fatrio.test.hibernate" );
+	static EntityManagerFactory factory = Persistence.createEntityManagerFactory( "com.fatrio.test.hibernate.postgresql" );
 
 	@Test
 	public void testSelectOnePerson() {
@@ -45,7 +45,6 @@ public class TestEntityManager {
 	@Test
 	public void testSaveSeveralPeople() {
 		EntityManager manager = factory.createEntityManager();
-		manager.setFlushMode(FlushModeType.COMMIT);
 		
 		Person p1 = new Person();
 		p1.setEmail("p1@gmail.com");
@@ -63,20 +62,22 @@ public class TestEntityManager {
 		p3.setLastName("p3.lastName");
 		
 		manager.getTransaction().begin();
-		manager.persist(p1);
-		manager.persist(p2);
-		manager.persist(p3);
-
-		System.out.println("* Before closing transaction:");
-		for (Person p : Arrays.asList(p1, p2, p3)) {
-			System.out.println(p);
+		
+		System.out.println("** Before closing transaction:");
+		List<Person> people = Arrays.asList(p1, p2, p3);
+		for (Person person : people) {
+			manager.persist(person);
+		}
+		
+		for (Person person : people) {
+			System.out.println(person);
 		}
 		
 		manager.getTransaction().commit();
 		
-		System.out.println("* After closing transaction:");
-		for (Person p : Arrays.asList(p1, p2, p3)) {
-			System.out.println(p);
+		System.out.println("** After closing transaction:");
+		for (Person person : people) {
+			System.out.println(person);
 		}
 	}
 	
