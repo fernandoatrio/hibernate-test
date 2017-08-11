@@ -14,11 +14,15 @@ import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import com.fatrio.main.hibernate.Person;
 
 public class TestEntityManager {
+	
+	private static final Logger logger = LogManager.getLogger(TestEntityManager.class.getName());
 	
 	static EntityManagerFactory factory = Persistence.createEntityManagerFactory( "com.fatrio.test.hibernate.postgresql" );
 
@@ -39,7 +43,7 @@ public class TestEntityManager {
 		
 		entityManager.getTransaction().commit();
 		
-		System.out.println(person);
+		logger.info(person);
 	}
 	
 	@Test
@@ -63,21 +67,21 @@ public class TestEntityManager {
 		
 		manager.getTransaction().begin();
 		
-		System.out.println("** Before closing transaction:");
+		logger.info("* Before closing transaction:");
 		List<Person> people = Arrays.asList(p1, p2, p3);
 		for (Person person : people) {
 			manager.persist(person);
 		}
 		
 		for (Person person : people) {
-			System.out.println(person);
+			logger.info(person);
 		}
 		
 		manager.getTransaction().commit();
 		
-		System.out.println("** After closing transaction:");
+		logger.info("* After closing transaction:");
 		for (Person person : people) {
-			System.out.println(person);
+			logger.info(person);
 		}
 	}
 	
@@ -90,5 +94,15 @@ public class TestEntityManager {
 		delete.from(Person.class);
 		manager.createQuery(delete).executeUpdate();
 		manager.getTransaction().commit();
+	}
+	
+	@Test
+	public void testLogger() {
+		logger.fatal("fatal!!");
+		logger.error("error!! ");
+		logger.warn("warn!!");
+		logger.info("info!!");
+		logger.debug("debug!!");
+		logger.trace("trace!!");
 	}
 }
