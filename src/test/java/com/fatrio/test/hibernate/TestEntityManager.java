@@ -97,12 +97,22 @@ public class TestEntityManager {
 	}
 	
 	@Test
-	public void testLogger() {
+	public void testLogger() {				
 		logger.fatal("fatal!!");
-		logger.error("error!! ");
+		logger.error("error!!");
 		logger.warn("warn!!");
 		logger.info("info!!");
 		logger.debug("debug!!");
 		logger.trace("trace!!");
+	}
+	
+	@Test
+	public void testLoggerWithParameters() {
+		Person person = new Person();
+		person.setEmail("p1@gmail.com");
+		person.setFirstName("p1.firstName");
+		person.setLastName("p1.lastName");
+		
+		logger.info("The person: {}", person);
 	}
 }
