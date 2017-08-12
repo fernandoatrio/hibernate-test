@@ -17,20 +17,16 @@ public class Person {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="person_sequence")
 	@SequenceGenerator(sequenceName="person_id_seq", name = "person_sequence", allocationSize=1)
 	private Integer id;
-	@Column(name="first_name")
+	@Column(name="first_name", length=20)
 	private String firstName;
-	@Column(name="last_name")
+	@Column(name="last_name", length=20)
 	private String lastName;
-	@Column
+	@Column(length=20)
 	private String email;
 	
 	public String toString() {
-		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-									.append(id)
-									.append(firstName)
-									.append(lastName)
-									.append(email);
-		return builder.build();
+		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return builder.append(id).append(firstName).append(lastName).append(email).build();
 	}
 	
 	public Integer getId() {

@@ -86,6 +86,32 @@ public class TestEntityManager {
 	}
 	
 	@Test
+	public void testMerge() {
+		EntityManager manager = factory.createEntityManager();
+		
+		Person person = new Person();
+		person.setEmail("update.de@gmail.com");
+		person.setFirstName("detached.firstName");
+		person.setLastName("detached.lastName");
+		
+		manager.getTransaction().begin();		
+		manager.persist(person);		
+		logger.info("Attached person: {}", person);
+		manager.getTransaction().commit();
+		
+		EntityManager manager2 = factory.createEntityManager();
+		manager2.getTransaction().begin();
+		Person detachedPerson = new Person();
+		detachedPerson.setId(person.getId());
+		detachedPerson.setEmail("UPDATED.DE@gmail.com");
+		manager2.merge(detachedPerson);
+		manager2.getTransaction().commit();
+		
+		EntityManager manager3 = factory.createEntityManager();
+		logger.info("After merge: {}", manager3.find(Person.class, person.getId()));
+	}
+	
+	@Test
 	public void testDeleteAll() {
 		EntityManager manager = factory.createEntityManager();
 		manager.getTransaction().begin();
