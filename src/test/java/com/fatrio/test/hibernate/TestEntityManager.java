@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
@@ -42,6 +43,24 @@ public class TestEntityManager {
 		Person person = entityManager.createQuery(q).getSingleResult();
 		
 		entityManager.getTransaction().commit();
+		
+		logger.info(person);
+	}
+
+	@Test
+	public void testGetPersonReference() {		
+		assertThat(factory, notNullValue());
+		
+		EntityManager entityManager = factory.createEntityManager();
+		
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Integer> query = builder.createQuery(Integer.class);
+		Root<Person> root = query.from(Person.class);
+		query = query.select(root.get("id")).where(builder.equal(root.get("email"), "p1@gmail.com"));
+		TypedQuery<Integer> typedQuery = entityManager.createQuery(query);
+		typedQuery.setFirstResult(0);
+		
+		Person person = entityManager.getReference(Person.class, typedQuery.getSingleResult());
 		
 		logger.info(person);
 	}
