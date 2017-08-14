@@ -25,7 +25,7 @@ public class TestEntityManager {
 	
 	private static final Logger logger = LogManager.getLogger(TestEntityManager.class.getName());
 	
-	static EntityManagerFactory factory = Persistence.createEntityManagerFactory( "com.fatrio.test.hibernate.postgresql" );
+	private static EntityManagerFactory factory = Persistence.createEntityManagerFactory( "com.fatrio.test.hibernate.postgresql" );
 
 	@Test
 	public void testSelectOnePerson() {
